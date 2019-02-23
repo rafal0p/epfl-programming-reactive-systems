@@ -2,6 +2,8 @@ package example
 
 import java.util.NoSuchElementException
 
+import scala.annotation.tailrec
+
 
 
 object Lists {
@@ -26,11 +28,16 @@ object Lists {
    * @param xs A list of natural numbers
    * @return The sum of all elements in `xs`
    */
-  def sum(xs: List[Int]): Int = xs match {
-      case Nil => 0
-      case xsh :: xst => xsh + sum(xst)
+  def sum(xs: List[Int]): Int = {
+    @tailrec
+    def tailrecSum(list: List[Int], acc: Int): Int = list match {
+      case Nil => acc
+      case h :: t => tailrecSum(t, acc + h)
     }
-  
+
+    tailrecSum(xs, 0)
+  }
+
   /**
    * This method returns the largest element in a list of integers. If the
    * list `xs` is empty it throws a `java.util.NoSuchElementException`.
@@ -46,7 +53,13 @@ object Lists {
    */
     def max(xs: List[Int]): Int = xs match {
       case Nil => throw new NoSuchElementException()
-      case x :: Nil => x
-      case xsh :: xst => if (xsh > max(xst)) xsh else max(xst)
+      case _ =>
+        @tailrec
+        def tailrecMax(list: List[Int], current: Int): Int = list match {
+          case Nil => current
+          case h :: t => if (h > current) h else tailrecMax(t, current)
+        }
+
+        tailrecMax(xs, xs.head)
     }
   }
