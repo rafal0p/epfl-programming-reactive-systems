@@ -51,7 +51,7 @@ object Async {
                                     makeAsyncComputation1: () => Future[A],
                                     makeAsyncComputation2: () => Future[B]
                                   ): Future[(A, B)] =
-    ???
+    makeAsyncComputation1() zip makeAsyncComputation2()
 
   /**
     * Attempt to perform an asynchronous computation.
