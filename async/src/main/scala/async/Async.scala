@@ -59,7 +59,11 @@ object Async {
     * the asynchronous computation so that at most `maxAttempts`
     * are eventually performed.
     */
-  def insist[A](makeAsyncComputation: () => Future[A], maxAttempts: Int): Future[A] =
-    ???
+  def insist[A](makeAsyncComputation: () => Future[A], maxAttempts: Int): Future[A] = maxAttempts match {
+    case attempts if attempts <= 0 => throw new IllegalArgumentException()
+    case 1 => makeAsyncComputation()
+    case _ => makeAsyncComputation()
+      .recoverWith { case _ => insist(makeAsyncComputation, maxAttempts - 1) }
+  }
 
 }
