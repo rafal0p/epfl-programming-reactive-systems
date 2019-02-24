@@ -1,7 +1,7 @@
 package async
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object Async {
 
@@ -22,7 +22,7 @@ object Async {
     * should return a successful `Future` with the same value.
     */
   def recoverFailure(eventuallyX: Future[Int]): Future[Int] =
-    eventuallyX.map(identity).recover(PartialFunction(_ => -1))
+    eventuallyX.map(identity).recover { case _ => -1 }
 
   /**
     * Perform two asynchronous computation, one after the other. `makeAsyncComputation2`
