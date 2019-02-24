@@ -37,11 +37,9 @@ object Async {
                                   makeAsyncComputation1: () => Future[A],
                                   makeAsyncComputation2: () => Future[B]
                                 ): Future[(A, B)] =
-    makeAsyncComputation1()
-      .flatMap(res1 =>
-        makeAsyncComputation2()
-          .map(res2 =>
-            (res1, res2)))
+    for (res1 <- makeAsyncComputation1();
+         res2 <- makeAsyncComputation2())
+      yield (res1, res2)
 
   /**
     * Concurrently perform two asynchronous computations and pair their successful
