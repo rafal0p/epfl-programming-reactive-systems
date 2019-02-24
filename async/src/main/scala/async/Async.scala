@@ -1,6 +1,7 @@
 package async
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Async {
 
@@ -11,7 +12,7 @@ object Async {
     * should return a failed `Future` with the same error.
     */
   def transformSuccess(eventuallyX: Future[Int]): Future[Boolean] =
-    ???
+    eventuallyX.map(x => x % 2 == 0)
 
   /**
     * Transforms a failed asynchronous `Int` computation into a
@@ -21,7 +22,7 @@ object Async {
     * should return a successful `Future` with the same value.
     */
   def recoverFailure(eventuallyX: Future[Int]): Future[Int] =
-    ???
+    eventuallyX.map(identity).recover(PartialFunction(_ => -1))
 
   /**
     * Perform two asynchronous computation, one after the other. `makeAsyncComputation2`
