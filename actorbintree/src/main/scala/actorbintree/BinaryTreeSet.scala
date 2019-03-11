@@ -59,18 +59,18 @@ class BinaryTreeSet extends Actor {
 
   def createRoot: ActorRef = context.actorOf(BinaryTreeNode.props(0, initiallyRemoved = true))
 
-  var root = createRoot
+  private var root = createRoot
 
   // optional
-  var pendingQueue = Queue.empty[Operation]
+  private var pendingQueue = Queue.empty[Operation]
 
   // optional
-  def receive = normal
+  def receive: Receive = normal
 
   // optional
   /** Accepts `Operation` and `GC` messages. */
   val normal: Receive = {
-    case _ => ???
+    case o: Operation => root ! o
   }
 
   // optional
@@ -82,42 +82,6 @@ class BinaryTreeSet extends Actor {
 
 }
 
-object BinaryTreeNode {
-
-  trait Position
-
-  case object Left extends Position
-
-  case object Right extends Position
-
-  case class CopyTo(treeNode: ActorRef)
-
-  case object CopyFinished
-
-  def props(elem: Int, initiallyRemoved: Boolean) = Props(classOf[BinaryTreeNode], elem, initiallyRemoved)
-}
-
-class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
-
-  import BinaryTreeNode._
-
-  var subtrees = Map[Position, ActorRef]()
-  var removed = initiallyRemoved
-
-  // optional
-  def receive = normal
-
-  // optional
-  /** Handles `Operation` messages and `CopyTo` requests. */
-  val normal: Receive = {
-    case _ => ???
-  }
-
-  // optional
-  /** `expected` is the set of ActorRefs whose replies we are waiting for,
-    * `insertConfirmed` tracks whether the copy of this node to the new tree has been confirmed.
-    */
-  def copying(expected: Set[ActorRef], insertConfirmed: Boolean): Receive = ???
 
 
-}
+
