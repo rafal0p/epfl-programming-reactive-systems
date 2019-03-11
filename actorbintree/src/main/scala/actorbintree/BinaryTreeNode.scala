@@ -1,5 +1,6 @@
 package actorbintree
 
+import actorbintree.BinaryTreeSet.{Contains, ContainsResult}
 import akka.actor.{Actor, ActorRef, Props}
 
 class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
@@ -15,7 +16,7 @@ class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
   // optional
   /** Handles `Operation` messages and `CopyTo` requests. */
   val normal: Receive = {
-    case _ => ???
+    case Contains(requester, id, elemToFind) => requester ! ContainsResult(id, false)
   }
 
   // optional
