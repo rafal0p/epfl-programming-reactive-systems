@@ -75,7 +75,6 @@ class MyBinaryTreeSuite(_system: ActorSystem) extends TestKit(_system) with FunS
   }
 
   test("zero element is accessible after insert") {
-    pending
     val id = Random.nextInt()
     val toInsert = 0
     ignoreMsg { case OperationFinished(_) => true }

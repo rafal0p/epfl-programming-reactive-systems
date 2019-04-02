@@ -23,7 +23,7 @@ class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
       case smaller if smaller < elem => findIn(Left, contains)
     }
     case insert: Insert => insert.elem match {
-      case theSame if theSame == elem => ()
+      case theSame if theSame == elem => removed = false
       case greater if greater > elem => addTo(Right, insert)
       case smaller if smaller < elem => addTo(Left, insert)
     }
