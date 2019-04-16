@@ -1,6 +1,6 @@
 package actorbintree
 
-import actorbintree.BinaryTreeSet.{Contains, ContainsResult, Insert, OperationFinished}
+import actorbintree.BinaryTreeSet.{Contains, ContainsResult, Insert, OperationFinished, Remove}
 import akka.actor.{Actor, ActorRef, Props}
 
 class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
@@ -27,6 +27,7 @@ class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
       case greater if greater > elem => addTo(Right, insert)
       case smaller if smaller < elem => addTo(Left, insert)
     }
+    case _: Remove => removed = true
   }
 
   def addTo(position: Position, insert: Insert): Unit = {

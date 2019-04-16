@@ -1,6 +1,6 @@
 package actorbintree
 
-import actorbintree.BinaryTreeSet.{Contains, ContainsResult, Insert, OperationFinished}
+import actorbintree.BinaryTreeSet.{Contains, ContainsResult, Insert, OperationFinished, Remove}
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
 import org.scalatest.{BeforeAndAfterAll, FunSuiteLike, Matchers}
@@ -85,4 +85,15 @@ class MyBinaryTreeSuite(_system: ActorSystem) extends TestKit(_system) with FunS
     expectMsg(ContainsResult(id, true))
   }
 
+  test(" removing zero element") {
+    val id = Random.nextInt()
+    val elem = 0
+    ignoreMsg { case OperationFinished(_) => true }
+
+    topNode ! Insert(testActor, Random.nextInt(), elem)
+    topNode ! Remove(testActor, Random.nextInt(), elem)
+    topNode ! Contains(testActor, id, elem)
+
+    expectMsg(ContainsResult(id, false))
+  }
 }
