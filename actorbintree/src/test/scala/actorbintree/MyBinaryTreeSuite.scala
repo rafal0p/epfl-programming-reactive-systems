@@ -96,4 +96,29 @@ class MyBinaryTreeSuite(_system: ActorSystem) extends TestKit(_system) with FunS
 
     expectMsg(ContainsResult(id, false))
   }
+
+  test(" removing positive element") {
+    val id = Random.nextInt()
+    val elem = 5
+    ignoreMsg { case OperationFinished(_) => true }
+
+    topNode ! Insert(testActor, Random.nextInt(), elem)
+    topNode ! Remove(testActor, Random.nextInt(), elem)
+    topNode ! Contains(testActor, id, elem)
+
+    expectMsg(ContainsResult(id, false))
+  }
+
+  test(" removing negative element") {
+    val id = Random.nextInt()
+    val elem = -5
+    ignoreMsg { case OperationFinished(_) => true }
+
+    topNode ! Insert(testActor, Random.nextInt(), elem)
+    topNode ! Remove(testActor, Random.nextInt(), elem)
+    topNode ! Contains(testActor, id, elem)
+
+    expectMsg(ContainsResult(id, false))
+  }
+
 }

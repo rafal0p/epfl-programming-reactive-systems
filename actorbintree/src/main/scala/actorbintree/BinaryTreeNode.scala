@@ -27,7 +27,15 @@ class BinaryTreeNode(val elem: Int, initiallyRemoved: Boolean) extends Actor {
       case greater if greater > elem => addTo(Right, insert)
       case smaller if smaller < elem => addTo(Left, insert)
     }
-    case _: Remove => removed = true
+    case remove: Remove => remove.elem match {
+      case theSame if theSame == elem => removed = true
+      case greater if greater > elem => removeFrom(Right, remove)
+      case smaller if smaller < elem => removeFrom(Left, remove)
+    }
+  }
+
+  def removeFrom(position: Position, remove: Remove): Unit = {
+    subtrees(position) ! remove
   }
 
   def addTo(position: Position, insert: Insert): Unit = {
